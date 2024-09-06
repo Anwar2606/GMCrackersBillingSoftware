@@ -1,0 +1,48 @@
+.all-bills-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .bills-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .bills-table th,
+  .bills-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .bills-table th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  .bills-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .bills-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .download-icon,
+  .delete-icon {
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 18px;
+  }
+  
+  .delete-icon {
+    color: red;
+  }
+  
