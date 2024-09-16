@@ -156,72 +156,11 @@ const ProductList = () => {
     return sno.replace(/(\d+)/, (match) => match.padStart(3, '0'));
   };
 
-//   const downloadPDF = () => {
-//     const doc = new jsPDF();
-//     const sortedProducts = [...products].sort((a, b) => padSno(a.sno).localeCompare(padSno(b.sno)));
-
-//     const groupedProducts = sortedProducts.reduce((acc, product) => {
-//         if (!acc[product.category]) {
-//             acc[product.category] = [];
-//         }
-//         acc[product.category].push(product);
-//         return acc;
-//     }, {});
-
-//     let startY = 10;
-
-//     Object.keys(groupedProducts).forEach((category) => {
-//         // Add category title
-//         doc.setFontSize(16);
-//         doc.text(category, 14, startY);
-//         startY += 10;
-
-//         // Create table for the category
-//         const tableColumn = ["S.No", "Name", "Regular Price", "Sales Price", "Category"];
-//         const tableRows = [];
-
-//         groupedProducts[category].forEach((product) => {
-//             const productData = [
-//                 product.sno,
-//                 product.name,
-//                 `Rs.${product.regularprice.toFixed(2)}`,
-//                 `Rs.${product.saleprice.toFixed(2)}`,
-//                 product.category
-//             ];
-//             tableRows.push(productData);
-//         });
-
-//         doc.autoTable({
-//             head: [tableColumn],
-//             body: tableRows,
-//             startY: startY,
-//             theme: 'striped',
-//             margin: { top: 10 },
-//             didDrawPage: function (data) {
-//                 startY = data.cursor.y + 10;
-//             }
-//         });
-
-//         // Adjust startY for the next category
-//         startY = doc.previousAutoTable.finalY + 10;
-//     });
-
-//     doc.save("Product_List.pdf");
-// };
 
 const downloadPDF = () => {
   const doc = new jsPDF();
 
-  // Add title at the top center of the PDF
-  
-
-  // Add contact numbers on the left side
-  
-  // Align G-Pay number and company phone number to the right side
  
- 
-
-  // Convert sno to string and sort products
   const sortedProducts = [...products].sort((a, b) => {
     const aSno = a.sno ? a.sno.toString() : '';
     const bSno = b.sno ? b.sno.toString() : '';
@@ -328,8 +267,8 @@ const downloadPDF = () => {
                 {product.expanded && (
                   <div className="product-description">{product.description}</div>
                 )}
-                <div className="product-price">Regular price: Rs.{product.regularprice.toFixed(2)}</div>
                 <div className="product-price">Sales price: Rs.{product.saleprice.toFixed(2)}</div>
+                <div className="product-price">InStock: {product.quantity}</div>
               </div>
             </div>
             <div className="product-actions">

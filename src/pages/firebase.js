@@ -18,8 +18,7 @@ const firebaseConfig = {
     projectId: "mainbilling1-166c9",
     storageBucket: "mainbilling1-166c9.appspot.com",
     messagingSenderId: "411663637638",
-    appId: "1:411663637638:web:d7b7c7221860edcba74507"               
-  
+    appId: "1:411663637638:web:d7b7c7221860edcba74507"
   //main2
   // apiKey: "AIzaSyC7CD7ve78jS2k3a3XzkdlWwBGhp_9Lfg0",
   // authDomain: "billing-software2.firebaseapp.com",
