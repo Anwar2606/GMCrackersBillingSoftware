@@ -1618,7 +1618,7 @@ return (
       </select>
 
       {/* Product List */}
-      <ul>
+      {/* <ul>
         {filteredProducts.map((product) => (
           <li key={product.id}>
             <div className="product-details">
@@ -1628,7 +1628,7 @@ return (
               })`}</span>
               <span>{`( InStock Rs. ${
                 product.quantity ? product.quantity : "0"
-              })`}</span>
+              })`}</span> */}
               {/* <span>
                 {product.inStock ? (
                   <span className="in-stock">In Stock</span>
@@ -1636,7 +1636,7 @@ return (
                   <span className="out-of-stock">Out of Stock</span>
                 )}
               </span> */}
-            </div>
+            {/* </div>
             <button
               onClick={() => addToCart(product)}
               disabled={!product.inStock}
@@ -1645,7 +1645,24 @@ return (
             </button>
           </li>
         ))}
-      </ul>
+      </ul> */}
+  <ul>
+  {filteredProducts
+    .sort((a, b) => {
+      // Sort sno as strings
+      return a.sno.localeCompare(b.sno, undefined, { numeric: true, sensitivity: 'base' });
+    })
+    .map(product => (
+      <li key={product.id}>
+        <div className="product-details">
+          <span>{product.name}</span>
+          <span>{`(Sales Rs. ${product.saleprice ? product.saleprice.toFixed(2) : '0.00'})`}</span>
+        </div>
+        <button onClick={() => addToCart(product)}>Add to Cart</button>
+      </li>
+    ))}
+</ul>
+
     </div>
 
     {/* Cart Section */}
