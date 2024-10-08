@@ -1599,22 +1599,28 @@ return (
         value={category}
       >
         <option value="">All Category</option>
-        <option value="ONE SOUND CRACKERS">ONE SOUND CRACKERS</option>
+        <option value="ONE SOUND">ONE SOUND</option>
+        <option value="DAMAL CRACKERS">DAMAL CRACKERS</option>
         <option value="SPARKLERS">SPARKLERS</option>
+        <option value="TWINKLING STARS">TWINKLING STARS</option>
         <option value="BIGILI CRACKERS">BIGILI CRACKERS</option>
+        <option value="FLOWER POTS">FLOWER POTS</option>
+        <option value="CHAKKARS">CHAKKARS</option>
+        <option value="SPINNERS">SPINNERS</option>
         <option value="VANITHA SPECIALS">VANITHA SPECIALS</option>
-        <option value="CHILDRENS HAPPY CRACKERS">
-          CHILDRENS HAPPY CRACKERS
+        <option value="CHILDREN HAPPY CRACKERS">
+        CHILDREN HAPPY CRACKERS
         </option>
-        <option value="SKYSHOTS">SKYSHOTS</option>
+        <option value="SKY SHOTS">SKY SHOTS</option>
         <option value="REPEATING SHOTS">REPEATING SHOTS</option>
-        <option value="SHOWERS">T.STARS / CANDLE / PENCIL</option>
-        <option value="TWINKLING STAR">TWINKLING STAR</option>
-        <option value="GARLAND">GARLAND</option>
+        <option value="SHOWERS">SHOWERS</option>
         <option value="MATCHES">MATCHES</option>
-        <option value="WALA CRACKERS">WALA CRACKERS</option>
-        <option value="GIFT BOXES">GIFT BOXES</option>
-        <option value="BOMBS">BOMBS</option>
+        <option value="GARLAND">GARLAND</option>
+        <option value="SPEACIAL CRACKERS">SPEACIAL CRACKERS</option>
+        <option value="SONY SERIES">SONY SERIES</option>
+        <option value="SONY CHILDREN PISTOL">SONY CHILDREN PISTOL</option>
+        <option value="GIFTBOX REGULAR">GIFTBOX REGULAR</option>
+        <option value="ROBO BRAND GIFT BOXES">ROBO BRAND GIFT BOXES</option>
       </select>
 
       {/* Product List */}

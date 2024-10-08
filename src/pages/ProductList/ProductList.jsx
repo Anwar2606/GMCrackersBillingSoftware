@@ -184,14 +184,14 @@ const downloadPDF = () => {
     startY += 10;
 
     // Create table for the category
-    const tableColumn = ["S.No", "Name", "Regular Price", "Sales Price", "Category"];
+    const tableColumn = ["S.No", "Name", "Sales Price", "Category"];
     const tableRows = [];
 
     groupedProducts[category].forEach((product) => {
       const productData = [
         product.sno ? product.sno.toString() : '', // Ensure sno is a string
         product.name,
-        `Rs. ${product.regularprice.toFixed(2)}`,
+       
         `Rs. ${product.saleprice.toFixed(2)}`,
         product.category
       ];
