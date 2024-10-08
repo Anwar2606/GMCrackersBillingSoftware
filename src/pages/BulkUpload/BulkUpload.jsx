@@ -326,6 +326,7 @@ const BulkUpload = () => {
       if (
         !product.name ||
         product.saleprice === undefined ||
+        product.quantity === undefined ||
         product.regularprice === undefined ||
         product.inStock === undefined
       ) {
@@ -362,6 +363,7 @@ const BulkUpload = () => {
         regularprice,
         category: product.category || "Uncategorized", // Default category if missing
         inStock,
+        quantity:product.quantity
       };
 
       try {
