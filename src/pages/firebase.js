@@ -13,19 +13,19 @@ const firebaseConfig = {
   // appId: "1:1086229411180:web:4a835dadcfb73b08a42f49" 
   
     //main
-    apiKey: "AIzaSyD9dhzJrhhENssGVbsGleNDk7ZTBUxsyik",
-    authDomain: "mainbilling1-166c9.firebaseapp.com",
-    projectId: "mainbilling1-166c9",
-    storageBucket: "mainbilling1-166c9.appspot.com",
-    messagingSenderId: "411663637638",
-    appId: "1:411663637638:web:d7b7c7221860edcba74507"
+    // apiKey: "AIzaSyD9dhzJrhhENssGVbsGleNDk7ZTBUxsyik",
+    // authDomain: "mainbilling1-166c9.firebaseapp.com",
+    // projectId: "mainbilling1-166c9",
+    // storageBucket: "mainbilling1-166c9.appspot.com",
+    // messagingSenderId: "411663637638",
+    // appId: "1:411663637638:web:d7b7c7221860edcba74507"
   //main2
-  // apiKey: "AIzaSyC7CD7ve78jS2k3a3XzkdlWwBGhp_9Lfg0",
-  // authDomain: "billing-software2.firebaseapp.com",
-  // projectId: "billing-software2",
-  // storageBucket: "billing-software2.appspot.com",
-  // messagingSenderId: "97163152398",
-  // appId: "1:97163152398:web:b02de4e1e085efbca9c05f"
+  apiKey: "AIzaSyC7CD7ve78jS2k3a3XzkdlWwBGhp_9Lfg0",
+  authDomain: "billing-software2.firebaseapp.com",
+  projectId: "billing-software2",
+  storageBucket: "billing-software2.appspot.com",
+  messagingSenderId: "97163152398",
+  appId: "1:97163152398:web:b02de4e1e085efbca9c05f"
 };
 
 const app = initializeApp(firebaseConfig);

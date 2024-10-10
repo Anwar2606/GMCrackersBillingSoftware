@@ -114,6 +114,7 @@ const EditProductPage = () => {
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [sno, setSno] = useState("");
+  const [inStock, setInStock] = useState(false);
   const [regularPrice, setRegularPrice] = useState(0);
   const [salePrice, setSalePrice] = useState(0);
   const [category, setCategory] = useState("");
@@ -127,6 +128,7 @@ const EditProductPage = () => {
         setProduct(productData);
         setName(productData.name);
         setQuantity(productData.quantity);
+        setInStock(productData.inStock);
         setSno(productData.sno);
         setRegularPrice(productData.regularprice);
         setSalePrice(productData.saleprice);
@@ -140,7 +142,9 @@ const EditProductPage = () => {
   const handleUpdate = async () => {
     const productData = {
       name,
+      quantity,
       sno,
+      inStock,
       regularprice: parseFloat(regularPrice),
       saleprice: parseInt(salePrice),
       category,
@@ -195,8 +199,19 @@ const EditProductPage = () => {
         type="text"
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
-        placeholder="Product Code"
+        placeholder="Quantity"
       />
+       <label>Instock:</label>
+      <select
+        className="custom-select"
+        value={inStock}
+        onChange={(e) => setInStock(e.target.value)}
+      >
+       <option value="true" >True</option>
+
+        <option value="false">False</option>
+        
+      </select><br></br><br></br>
       <label>Category:</label>
       <select
         className="custom-select"

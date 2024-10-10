@@ -1662,7 +1662,7 @@ return (
       <li key={product.id}>
         <div className="product-details">
           <span>{product.name}</span>
-          <span>{`(Sales Rs. ${product.saleprice ? product.saleprice.toFixed(2) : '0.00'})`}</span>
+          {/* <span>{`(Sales Rs. ${product.saleprice ? product.saleprice.toFixed(2) : '0.00'})`}</span> */}
           <span>{`(InStock Rs. ${product.quantity ? product.quantity : '0'})`}</span>
         </div>
         <button onClick={() => addToCart(product)}>Add to Cart</button>
