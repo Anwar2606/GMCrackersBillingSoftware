@@ -515,60 +515,62 @@ doc.setFontSize(9);
        const centerX = rectX + rectWidth / 2;
 
        doc.line(centerX, rectY, centerX, rectY + rectHeight);
+       const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+       // Construct tableBody with product details
        const tableBody = cart
          .filter(item => item.quantity > 0)
-         .map(item => [
+         .map((item, index) => [
+           (index + 1).toString(),
            item.name,
            '36041000',
            item.quantity.toString(),
            `Rs. ${item.saleprice.toFixed(2)}`,
            `Rs. ${(item.saleprice * item.quantity).toFixed(2)}`
          ]);
-
+       
+       // Add rows for total amount, discount, tax, etc.
        tableBody.push(
          [
-           { content: 'Total Amount:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-           { content:  `${Math.round(billingDetails.totalAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+           { content: 'Total Amount:', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+           { content: `${Math.round(billingDetails.totalAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
          ],
          [
-           { content: `Discount (${billingDetails.discountPercentage}%):`, colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+           { content: `Discount (${billingDetails.discountPercentage}%):`, colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
            { content: `${Math.round(billingDetails.totalAmount * (parseFloat(billingDetails.discountPercentage) / 100) || 0).toFixed(2)}`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
          ],
          [
-           { content: 'Sub Total:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-           { content:  `${Math.round(billingDetails.discountedTotal)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+           { content: 'Sub Total:', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+           { content: `${Math.round(billingDetails.discountedTotal)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
          ]
        );
-     
+       
        if (taxOption === 'cgst_sgst') {
          tableBody.push(
            [
-             { content: 'CGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-             { content:  `${Math.round(billingDetails.cgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+             { content: 'CGST (9%):', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+             { content: `${Math.round(billingDetails.cgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
            ],
            [
-             { content: 'SGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-             { content:  `${Math.round(billingDetails.sgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+             { content: 'SGST (9%):', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+             { content: `${Math.round(billingDetails.sgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
            ]
          );
        } else if (taxOption === 'igst') {
          tableBody.push(
            [
-             { content: 'IGST (18%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-             {
-               content: formatGrandTotal(grandTotal),
-               styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
-             }
+             { content: 'IGST (18%):', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+             { content: `${Math.round(billingDetails.igstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
            ]
          );
        }
-       const grandTotal = billingDetails.grandTotal;
+       
+       // Add the grand total
        tableBody.push(
          [
            {
              content: 'Grand Total:',
-             colSpan: 4,
+             colSpan: 5,
              styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
            },
            {
@@ -577,16 +579,98 @@ doc.setFontSize(9);
            }
          ]
        );
-
+       
+       // Add the row for total quantity at the bottom of the table
+       tableBody.push(
+         [
+           { content: 'Total Quantity:', colSpan: 3, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+           { content: totalQuantity.toString(), styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+         ]
+       );
+       
+       // Generate the table with jsPDF autoTable
        doc.autoTable({
-         head: [['Product Name','HSN Code', 'Quantity', 'Rate per price', 'Total']],
+         head: [['S.no', 'Product Name', 'HSN Code', 'Quantity', 'Rate per price', 'Total']],
          body: tableBody,
          startY: 150,
          theme: 'grid',
-         headStyles: { fillColor: [255, 182, 193], textColor: [0, 0, 139], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
-         bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
+         headStyles: { fillColor: [255, 182, 193], textColor: [0, 0, 139], lineWidth: 0.2, lineColor: [0, 0, 0] },
+         bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.2, lineColor: [0, 0, 0] },
          alternateRowStyles: { fillColor: [245, 245, 245] },
        });
+       
+      //  const tableBody = cart
+      //    .filter(item => item.quantity > 0)
+      //    .map(item => [
+      //      item.name,
+      //      '36041000',
+      //      item.quantity.toString(),
+      //      `Rs. ${item.saleprice.toFixed(2)}`,
+      //      `Rs. ${(item.saleprice * item.quantity).toFixed(2)}`
+      //    ]);
+
+      //  tableBody.push(
+      //    [
+      //      { content: 'Total Amount:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      //      { content:  `${Math.round(billingDetails.totalAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+      //    ],
+      //    [
+      //      { content: `Discount (${billingDetails.discountPercentage}%):`, colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      //      { content: `${Math.round(billingDetails.totalAmount * (parseFloat(billingDetails.discountPercentage) / 100) || 0).toFixed(2)}`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+      //    ],
+      //    [
+      //      { content: 'Sub Total:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      //      { content:  `${Math.round(billingDetails.discountedTotal)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+      //    ]
+      //  );
+     
+      //  if (taxOption === 'cgst_sgst') {
+      //    tableBody.push(
+      //      [
+      //        { content: 'CGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      //        { content:  `${Math.round(billingDetails.cgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+      //      ],
+      //      [
+      //        { content: 'SGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      //        { content:  `${Math.round(billingDetails.sgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+      //      ]
+      //    );
+      //  } else if (taxOption === 'igst') {
+      //    tableBody.push(
+      //      [
+      //        { content: 'IGST (18%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      //        {
+      //          content: formatGrandTotal(grandTotal),
+      //          styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+      //        }
+      //      ]
+      //    );
+      //  }
+      //  const grandTotal = billingDetails.grandTotal;
+      //  tableBody.push(
+      //    [
+      //      {
+      //        content: 'Grand Total:',
+      //        colSpan: 4,
+      //        styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+      //      },
+      //      {
+      //        content: `${Math.round(billingDetails.grandTotal)}.00`,
+      //        styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+      //      }
+      //    ]
+      //  );
+
+      //  doc.autoTable({
+      //    head: [['Product Name','HSN Code', 'Quantity', 'Rate per price', 'Total']],
+      //    body: tableBody,
+      //    startY: 150,
+      //    theme: 'grid',
+      //    headStyles: { fillColor: [255, 182, 193], textColor: [0, 0, 139], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
+      //    bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
+      //    alternateRowStyles: { fillColor: [245, 245, 245] },
+      //  });
+
        const totalAmount = cart.reduce((total, item) => total + item.quantity * item.saleprice, 0);
 const pageSizeWidth = doc.internal.pageSize.getWidth();
 const pageSizeHeight = doc.internal.pageSize.getHeight();
@@ -955,77 +1039,158 @@ labelTexts.forEach((labelText, index) => {
 
     doc.line(centerX, rectY, centerX, rectY + rectHeight);
 
-    const tableBody = cart
-      .filter(item => item.quantity > 0)
-      .map(item => [
-        item.name,
-        '36041000',
-        item.quantity.toString(),
-        `Rs. ${item.saleprice.toFixed(2)}`,
-        `Rs. ${(item.saleprice * item.quantity).toFixed(2)}`
-      ]);
+    // const tableBody = cart
+    //   .filter(item => item.quantity > 0)
+    //   .map(item => [
+    //     item.name,
+    //     '36041000',
+    //     item.quantity.toString(),
+    //     `Rs. ${item.saleprice.toFixed(2)}`,
+    //     `Rs. ${(item.saleprice * item.quantity).toFixed(2)}`
+    //   ]);
 
-    tableBody.push(
-      [
-        { content: 'Total Amount:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-        { content:  `${Math.round(billingDetails.totalAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
-      ],
-      [
-        { content: `Discount (${billingDetails.discountPercentage}%):`, colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-        { content: `${Math.round(billingDetails.totalAmount * (parseFloat(billingDetails.discountPercentage) / 100) || 0).toFixed(2)}`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
-      ],
-      [
-        { content: 'Sub Total:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-        { content:  `${Math.round(billingDetails.discountedTotal)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
-      ]
-    );
+    // tableBody.push(
+    //   [
+    //     { content: 'Total Amount:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    //     { content:  `${Math.round(billingDetails.totalAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    //   ],
+    //   [
+    //     { content: `Discount (${billingDetails.discountPercentage}%):`, colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    //     { content: `${Math.round(billingDetails.totalAmount * (parseFloat(billingDetails.discountPercentage) / 100) || 0).toFixed(2)}`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    //   ],
+    //   [
+    //     { content: 'Sub Total:', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    //     { content:  `${Math.round(billingDetails.discountedTotal)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    //   ]
+    // );
   
-    if (taxOption === 'cgst_sgst') {
-      tableBody.push(
-        [
-          { content: 'CGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-          { content:  `${Math.round(billingDetails.cgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
-        ],
-        [
-          { content: 'SGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-          { content:  `${Math.round(billingDetails.sgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
-        ]
-      );
-    } else if (taxOption === 'igst') {
-      tableBody.push(
-        [
-          { content: 'IGST (18%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
-          {
-            content: formatGrandTotal(grandTotal),
-            styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
-          }
-        ]
-      );
-    }
-    const grandTotal = billingDetails.grandTotal;
-    tableBody.push(
-      [
-        {
-          content: 'Grand Total:',
-          colSpan: 4,
-          styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
-        },
-        {
-          content: `${Math.round(billingDetails.grandTotal)}.00`,
-          styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
-        }
-      ]
-    );
+    // if (taxOption === 'cgst_sgst') {
+    //   tableBody.push(
+    //     [
+    //       { content: 'CGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    //       { content:  `${Math.round(billingDetails.cgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    //     ],
+    //     [
+    //       { content: 'SGST (9%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    //       { content:  `${Math.round(billingDetails.sgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    //     ]
+    //   );
+    // } else if (taxOption === 'igst') {
+    //   tableBody.push(
+    //     [
+    //       { content: 'IGST (18%):', colSpan: 4, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    //       {
+    //         content: formatGrandTotal(grandTotal),
+    //         styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+    //       }
+    //     ]
+    //   );
+    // }
+    // const grandTotal = billingDetails.grandTotal;
+    // tableBody.push(
+    //   [
+    //     {
+    //       content: 'Grand Total:',
+    //       colSpan: 4,
+    //       styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+    //     },
+    //     {
+    //       content: `${Math.round(billingDetails.grandTotal)}.00`,
+    //       styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+    //     }
+    //   ]
+    // );
 
-    doc.autoTable({
-      head: [['Product Name','HSN Code', 'Quantity', 'Rate per price', 'Total']],
-      body: tableBody,
-      startY: 150,
-      theme: 'grid',
-      headStyles: { fillColor: [255, 182, 193], textColor: [0, 0, 139], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
-      bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
-      alternateRowStyles: { fillColor: [245, 245, 245] },
-    });
+    // doc.autoTable({
+    //   head: [['Product Name','HSN Code', 'Quantity', 'Rate per price', 'Total']],
+    //   body: tableBody,
+    //   startY: 150,
+    //   theme: 'grid',
+    //   headStyles: { fillColor: [255, 182, 193], textColor: [0, 0, 139], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
+    //   bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.2, lineColor: [0, 0, 0] }, // Reduced lineWidth
+    //   alternateRowStyles: { fillColor: [245, 245, 245] },
+    // });
+    const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const tableBody = cart
+  .filter(item => item.quantity > 0)
+  .map((item, index) => [
+    (index + 1).toString(),
+    item.name,
+    '36041000',
+    item.quantity.toString(),
+    `Rs. ${item.saleprice.toFixed(2)}`,
+    `Rs. ${(item.saleprice * item.quantity).toFixed(2)}`
+  ]);
+
+// Add rows for total amount, discount, tax, etc.
+tableBody.push(
+  [
+    { content: 'Total Amount:', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    { content: `${Math.round(billingDetails.totalAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+  ],
+  [
+    { content: `Discount (${billingDetails.discountPercentage}%):`, colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    { content: `${Math.round(billingDetails.totalAmount * (parseFloat(billingDetails.discountPercentage) / 100) || 0).toFixed(2)}`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+  ],
+  [
+    { content: 'Sub Total:', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    { content: `${Math.round(billingDetails.discountedTotal)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+  ]
+);
+
+if (taxOption === 'cgst_sgst') {
+  tableBody.push(
+    [
+      { content: 'CGST (9%):', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      { content: `${Math.round(billingDetails.cgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    ],
+    [
+      { content: 'SGST (9%):', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      { content: `${Math.round(billingDetails.sgstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    ]
+  );
+} else if (taxOption === 'igst') {
+  tableBody.push(
+    [
+      { content: 'IGST (18%):', colSpan: 5, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+      { content: `${Math.round(billingDetails.igstAmount)}.00`, styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+    ]
+  );
+}
+
+// Add the grand total
+tableBody.push(
+  [
+    {
+      content: 'Grand Total:',
+      colSpan: 5,
+      styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+    },
+    {
+      content: `${Math.round(billingDetails.grandTotal)}.00`,
+      styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' }
+    }
+  ]
+);
+
+// Add the row for total quantity at the bottom of the table
+tableBody.push(
+  [
+    { content: 'Total Quantity:', colSpan: 3, styles: { halign: 'right', fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } },
+    { content: totalQuantity.toString(), styles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], fontStyle: 'bold' } }
+  ]
+);
+
+// Generate the table with jsPDF autoTable
+doc.autoTable({
+  head: [['S.no', 'Product Name', 'HSN Code', 'Quantity', 'Rate per price', 'Total']],
+  body: tableBody,
+  startY: 150,
+  theme: 'grid',
+  headStyles: { fillColor: [255, 182, 193], textColor: [0, 0, 139], lineWidth: 0.2, lineColor: [0, 0, 0] },
+  bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.2, lineColor: [0, 0, 0] },
+  alternateRowStyles: { fillColor: [245, 245, 245] },
+});
     const totalAmount = cart.reduce((total, item) => total + item.quantity * item.saleprice, 0);
 const pageSizeWidth = doc.internal.pageSize.getWidth();
 const pageSizeHeight = doc.internal.pageSize.getHeight();
